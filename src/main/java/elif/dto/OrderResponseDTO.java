@@ -23,15 +23,15 @@ public class OrderResponseDTO {
         modelMapper.addMappings(orderMap);
     }
 
-    private List<ProductDTO> productDTOList;
+    private List<ProductCreateDTO> productCreateDTOList;
     private String orderCost;
 
-    public List<ProductDTO> getProductDTOList() {
-        return productDTOList;
+    public List<ProductCreateDTO> getProductCreateDTOList() {
+        return productCreateDTOList;
     }
 
-    public void setProductDTOList(List<ProductDTO> productDTOList) {
-        this.productDTOList = productDTOList;
+    public void setProductCreateDTOList(List<ProductCreateDTO> productCreateDTOList) {
+        this.productCreateDTOList = productCreateDTOList;
     }
 
     public String getOrderCost() {
