@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/elif")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -24,26 +24,30 @@ public class UserController {
     UserService userService;
 
     @ApiOperation(value = "View a list of user", response = List.class)
-    @GetMapping("/users")
+    @GetMapping("/view")
     public List<User> getAllUser() {
+
         return userService.getAllUser();
     }
 
     @ApiOperation(value = "Add an user")
-    @PostMapping("/users")
+    @PostMapping("/add")
     public UserResponseDTO addUser(@RequestBody UserCreateDTO userCreateDTO) {
+
         return userService.addUser(userCreateDTO);
     }
 
     @ApiOperation(value = "View user by id")
-    @GetMapping("/users/{id}")
+    @GetMapping("/view/{id}")
     public User findUserById(@PathVariable(value = "id") Long userId) throws ResourceNotFoundException {
+
         return userService.findUserById(userId);
     }
 
     @ApiOperation(value = "Delete user by id")
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/delete/{id}")
     public Map<String, Boolean> deleteUserById(@PathVariable(value = "id") Long userId) {
+
         return userService.deleteUserById(userId);
     }
 }
