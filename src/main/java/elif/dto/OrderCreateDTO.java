@@ -6,7 +6,7 @@ public class OrderCreateDTO {
 
     private String orderCost;
     private Long userId;
-    private List<Long> productIdList;
+    private List<ProductCreateDTO> productIdList;
 
     public String getOrderCost() {
         return orderCost;
@@ -25,11 +25,11 @@ public class OrderCreateDTO {
         this.userId = userId;
     }
 
-    public List<Long> getProductIdList() {
+    public List<ProductCreateDTO> getProductIdList() {
         return productIdList;
     }
 
-    public void setProductIdList(List<Long> productIdList) {
+    public void setProductIdList(List<ProductCreateDTO> productIdList) {
         this.productIdList = productIdList;
     }
 }

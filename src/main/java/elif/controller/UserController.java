@@ -1,5 +1,7 @@
 package elif.controller;
 
+import elif.dto.UserCreateDTO;
+import elif.dto.UserResponseDTO;
 import elif.entity.User;
 import elif.repository.UserRepository;
 import elif.service.UserService;
@@ -29,8 +31,8 @@ public class UserController {
 
     @ApiOperation(value = "Add an user")
     @PostMapping("/users")
-    public User addUser(@RequestBody User user) {
-        return userService.addUser(user);
+    public UserResponseDTO addUser(@RequestBody UserCreateDTO userCreateDTO) {
+        return userService.addUser(userCreateDTO);
     }
 
     @ApiOperation(value = "View user by id")

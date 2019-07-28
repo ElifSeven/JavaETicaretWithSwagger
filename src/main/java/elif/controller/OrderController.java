@@ -2,6 +2,7 @@ package elif.controller;
 
 
 import elif.dto.OrderCreateDTO;
+import elif.dto.OrderResponseDTO;
 import elif.entity.Order;
 import elif.repository.OrderRepository;
 import elif.service.OrderService;
@@ -26,11 +27,9 @@ public class OrderController {
 
     @ApiOperation(value = "Add Order")
     @PostMapping("/order")
-    public Order addOrder(@RequestBody OrderCreateDTO orderCreateDTO) {
-
+    public OrderResponseDTO addOrder(@RequestBody OrderCreateDTO orderCreateDTO) {
 
         return orderService.addOrder(orderCreateDTO);
-
     }
 
     @ApiOperation(value = "View all order")
@@ -43,12 +42,14 @@ public class OrderController {
     @ApiOperation(value = "View order by id")
     @GetMapping(name = "/order/{orderId}")
     public Order findOrderById(Long orderId) throws ResourceNotFoundException {
+
         return orderService.findOrdeById(orderId);
     }
 
     @ApiOperation(value = "Delete order by id")
     @DeleteMapping(name = "/order/{orderId}")
     public Map<String, Boolean> deleteOrderById(Long orderId) throws ResourceNotFoundException {
+
         return orderService.deleteOrderById(orderId);
     }
 

@@ -1,5 +1,7 @@
 package elif.service;
 
+import elif.dto.UserCreateDTO;
+import elif.dto.UserResponseDTO;
 import elif.entity.User;
 
 import java.util.List;
@@ -9,7 +11,7 @@ public interface UserService {
 
     List<User> getAllUser();
 
-    User addUser(User user);
+    UserResponseDTO addUser(UserCreateDTO userCreateDTO);
 
     User findUserById(Long userId);
 

@@ -25,7 +25,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = productCreateDTOtoProduct(productCreateDTO);
         product = productRepository.save(product);
-        return productResponseDTOFomProduct(product);
+        return productResponseDTOFromProduct(product);
 
     }
 
@@ -40,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
 
     }
         //save islemi icin
-    public ProductResponseDTO productResponseDTOFomProduct(Product product) {
+    public ProductResponseDTO productResponseDTOFromProduct(Product product) {
 
         ProductResponseDTO productResponseDTO = new ProductResponseDTO();
 

@@ -2,7 +2,7 @@ package elif.dto;
 
 public class ProductCreateDTO {
 
-
+    private Long    productId;
     private String productName;
     private String productBrand;
     private Double productPrice;
@@ -30,5 +30,13 @@ public class ProductCreateDTO {
 
     public void setProductPrice(Double productPrice) {
         this.productPrice = productPrice;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 }
