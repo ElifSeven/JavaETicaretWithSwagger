@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
         return productFromProductCreateDTO;
 
     }
-
+        //save islemi icin
     public ProductResponseDTO productResponseDTOFomProduct(Product product) {
 
         ProductResponseDTO productResponseDTO = new ProductResponseDTO();
