@@ -1,19 +1,12 @@
 package elif.dto;
 
-public class ProductDTO {
+public class ProductCreateDTO {
 
-    private Long productId;
+
     private String productName;
     private String productBrand;
     private Double productPrice;
 
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
 
     public String getProductName() {
         return productName;

@@ -1,5 +1,7 @@
 package elif.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +22,7 @@ public class Product {
     private String brand;
 
     @Column(name = "price", nullable = false)
-    private String price;
+    private Double price;
 
     @Column(name = "prdocut_create_date")
     private Date createProductDate;
@@ -28,6 +30,7 @@ public class Product {
     @Column(name = "product_update_date")
     private Date updateProductDate;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "productList")
     private List<Order> orderList;
 
@@ -42,7 +45,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(String productName, String brand, String price, Date createProductDate, Date updateProductDate) {
+    public Product(String productName, String brand, Double price, Date createProductDate, Date updateProductDate) {
 
         this.productName = productName;
         this.brand = brand;
@@ -75,11 +78,11 @@ public class Product {
         this.brand = brand;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
