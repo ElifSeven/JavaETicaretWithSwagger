@@ -1,18 +1,24 @@
 package elif.service.impl;
 
-import elif.dto.OrderCreateDTO;
-import elif.dto.OrderResponseDTO;
-import elif.dto.ProductCreateDTO;
-import elif.entity.Order;
-import elif.repository.OrderRepository;
-import elif.service.OrderService;
-import elif.service.ProductService;
-import elif.service.UserService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import elif.dto.OrderCreateDTO;
+import elif.dto.OrderResponseDTO;
+import elif.dto.ProductResponseDTO;
+import elif.entity.Order;
+import elif.entity.Product;
+import elif.repository.OrderRepository;
+import elif.service.OrderService;
+import elif.service.ProductService;
+import elif.service.UserService;
 
 @Service
 
@@ -36,18 +42,6 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderCreateDTOtoOrder(orderCreateDTO);
         order = orderRepository.save(order);
 
-        List<ProductCreateDTO> productList = new ArrayList<>();
-
-        // orderCreateDTO.getProductIdList().stream().forEach(n->productList.add(productService.findProductById(n));
-
-
-       /* orderCreateDTO.getProductIdList().stream().forEach(n -> {
-            try {
-                productList.add(productService.findProductById(n));
-            } catch (elif.exception.ResourceNotFoundException e) {
-                e.printStackTrace();
-            }
-        });*/
         return orderResponseDTOFromOrder(order);
 
     }
@@ -55,9 +49,23 @@ public class OrderServiceImpl implements OrderService {
     public Order orderCreateDTOtoOrder(OrderCreateDTO orderCreateDTO) {
 
         Order orderFromOrderCreateDTO = new Order();
-        orderFromOrderCreateDTO.setProductList(orderCreateDTO.getProductId());
-        //   orderFromOrderCreateDTO.setProductList(orderCreateDTO.getProductList());
+        
+        List<Product> productList = new ArrayList<>();
+        double cost = 0;
 
+        orderCreateDTO.getProductList().stream().forEach(n -> {
+            try {
+            	Product newItem = productService.findProductById(n);
+            	productList.add(newItem);
+            	cost += newItem.getPrice();
+            } catch (elif.exception.ResourceNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+        
+        orderFromOrderCreateDTO.setProductList(productList);
+        orderFromOrderCreateDTO.setCost(String.valueOf(cost));
+        orderFromOrderCreateDTO.setUser(userService.findUserByEmailAdresss(orderCreateDTO.getEmail()));
 
         return orderFromOrderCreateDTO;
     }
@@ -68,7 +76,18 @@ public class OrderServiceImpl implements OrderService {
         OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
         orderResponseDTO.setOrderCost(order.getCost());
         orderResponseDTO.setEmail(order.getUser().getEmailAddress());
-        // orderResponseDTO.setProductCreateDTOList(order.getProductList());
+        
+        List<ProductResponseDTO> productResponseList = new ArrayList<>();
+
+        order.getProductList().stream().forEach(n -> {
+            try {
+            	productResponseList.add(productService.productResponseDTOFromProduct(productService.findProductById(n.getProductId())));
+            } catch (elif.exception.ResourceNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+        
+        orderResponseDTO.setProductCreateDTOList(productResponseList);
 
         return orderResponseDTO;
     }

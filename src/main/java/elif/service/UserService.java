@@ -16,4 +16,6 @@ public interface UserService {
     User findUserById(Long userId);
 
     Map<String, Boolean> deleteUserById(Long userId);
+    
+    User findUserByEmailAdresss(String emailAdress);
 }

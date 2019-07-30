@@ -60,7 +60,12 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = userRepository.findById(userId);
         return userOptional.orElseThrow(() -> new org.springframework.data.rest.webmvc.ResourceNotFoundException("User not found for this id: " + userId));
 
-
+    }
+    
+    @Override
+    public User findUserByEmailAdresss(String emailAdress)
+    {
+    	return userRepository.findUserByEmailAddress(emailAdress);
     }
 
     @Override
