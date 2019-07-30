@@ -43,7 +43,7 @@ public class OrderController {
     @GetMapping(name = "/view/{orderId}")
     public Order findOrderById(Long orderId) throws ResourceNotFoundException {
 
-        return orderService.findOrdeById(orderId);
+        return orderService.findOrderById(orderId);
     }
 
     @ApiOperation(value = "Delete order by id")

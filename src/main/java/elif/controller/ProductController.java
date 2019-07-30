@@ -39,7 +39,7 @@ public class ProductController {
 
     @ApiOperation(value = "View product by id")
     @GetMapping("/view/{id}")
-    public ProductCreateDTO findProductById(Long productId) throws ResourceNotFoundException {
+    public Product findProductById(Long productId) throws ResourceNotFoundException {
 
         return productService.findProductById(productId);
     }

@@ -14,7 +14,7 @@ public interface ProductService {
 
     List<Product> getAllProduct();
 
-    ProductCreateDTO findProductById(Long productId) throws ResourceNotFoundException;
+    Product findProductById(Long productId) throws ResourceNotFoundException;
 
     Map<String, Boolean> deleteProductById(Long productId);
 

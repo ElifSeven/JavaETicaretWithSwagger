@@ -2,9 +2,8 @@ package elif.service.impl;
 
 import elif.dto.OrderCreateDTO;
 import elif.dto.OrderResponseDTO;
+import elif.dto.ProductCreateDTO;
 import elif.entity.Order;
-import elif.entity.Product;
-import elif.entity.User;
 import elif.repository.OrderRepository;
 import elif.service.OrderService;
 import elif.service.ProductService;
@@ -33,14 +32,13 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDTO addOrder(OrderCreateDTO orderCreateDTO) {
 
         OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
-        User user = userService.findUserById(orderCreateDTO.getUserId());
 
         Order order = orderCreateDTOtoOrder(orderCreateDTO);
         order = orderRepository.save(order);
 
-        List<Product> productList = new ArrayList<>();
+        List<ProductCreateDTO> productList = new ArrayList<>();
 
-        // orderCreateDTO.getProductIdList().stream().forEach(n->productList.add(productService.findProductById());
+        // orderCreateDTO.getProductIdList().stream().forEach(n->productList.add(productService.findProductById(n));
 
 
        /* orderCreateDTO.getProductIdList().stream().forEach(n -> {
@@ -50,23 +48,16 @@ public class OrderServiceImpl implements OrderService {
                 e.printStackTrace();
             }
         });*/
-
-       /* UserResponseDTO userResponseDTO = new UserResponseDTO();
-        user.setEmailAddress(userResponseDTO.getEmail());
-        //orderResponseDTO.setUser(user);
-        orderResponseDTO.setOrderCost(orderCreateDTO.getOrderCost());
-        orderResponseDTO.setProductCreateDTOList(orderCreateDTO.getProductIdList());
-        return orderRepository.save(order);*/
-
         return orderResponseDTOFromOrder(order);
+
     }
 
     public Order orderCreateDTOtoOrder(OrderCreateDTO orderCreateDTO) {
 
         Order orderFromOrderCreateDTO = new Order();
-        orderFromOrderCreateDTO.setCost(orderCreateDTO.getOrderCost());
-        orderFromOrderCreateDTO.setProductList(orderCreateDTO.getProductIdList());
-        orderFromOrderCreateDTO.setUser(userService.findUserById(orderCreateDTO.getUserId()));
+        orderFromOrderCreateDTO.setProductList(orderCreateDTO.getProductId());
+        //   orderFromOrderCreateDTO.setProductList(orderCreateDTO.getProductList());
+
 
         return orderFromOrderCreateDTO;
     }
@@ -77,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
         OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
         orderResponseDTO.setOrderCost(order.getCost());
         orderResponseDTO.setEmail(order.getUser().getEmailAddress());
-        orderResponseDTO.setProductCreateDTOList(order.getProductList());
+        // orderResponseDTO.setProductCreateDTOList(order.getProductList());
 
         return orderResponseDTO;
     }
@@ -89,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order findOrdeById(Long orderId) {
+    public Order findOrderById(Long orderId) {
 
         Optional<Order> orderOptional = orderRepository.findById(orderId);
         return orderOptional.orElseThrow(() -> new ResourceNotFoundException());

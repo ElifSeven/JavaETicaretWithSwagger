@@ -13,7 +13,7 @@ public interface OrderService {
 
     List<Order> getAllOrder(Order order);
 
-    Order findOrdeById(Long orderId);
+    Order findOrderById(Long orderId);
 
     Map<String, Boolean> deleteOrderById(Long orderId);
 }

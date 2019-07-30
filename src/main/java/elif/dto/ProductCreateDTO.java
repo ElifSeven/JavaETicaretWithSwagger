@@ -2,7 +2,7 @@ package elif.dto;
 
 public class ProductCreateDTO {
 
-    private Long    productId;
+    private Long productId;
     private String productName;
     private String productBrand;
     private Double productPrice;

@@ -1,8 +1,6 @@
 package elif.entity;
 
 
-import elif.dto.ProductCreateDTO;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -40,13 +38,13 @@ public class Order {
                     @JoinColumn(name = "order_id")},
             inverseJoinColumns = {@JoinColumn(name = "product_id")}
     )
-    private List<ProductCreateDTO> productList;
+    private List<Product> productList;
 
-    public List<ProductCreateDTO> getProductList() {
+    public List<Product> getProductList() {
         return productList;
     }
 
-    public void setProductList(List<ProductCreateDTO> productList) {
+    public void setProductList(List<Product> productList) {
         this.productList = productList;
     }
 

@@ -4,32 +4,31 @@ import java.util.List;
 
 public class OrderCreateDTO {
 
-    private String orderCost;
-    private Long userId;
-    private List<ProductCreateDTO> productIdList;
+    private String email;
+    private List<ProductCreateDTO> productList;
+    private Long productId;
 
-    public String getOrderCost() {
-        return orderCost;
+    public String getEmail() {
+        return email;
     }
 
-
-    public void setOrderCost(String orderCost) {
-        this.orderCost = orderCost;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Long getUserId() {
-        return userId;
+    public List<ProductCreateDTO> getProductList() {
+        return productList;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setProductList(List<ProductCreateDTO> productList) {
+        this.productList = productList;
     }
 
-    public List<ProductCreateDTO> getProductIdList() {
-        return productIdList;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setProductIdList(List<ProductCreateDTO> productIdList) {
-        this.productIdList = productIdList;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 }
