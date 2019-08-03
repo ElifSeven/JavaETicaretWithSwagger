@@ -35,6 +35,7 @@ public class ProductServiceImpl implements ProductService {
         productFromProductCreateDTO.setProductName(productCreateDTO.getProductName());
         productFromProductCreateDTO.setBrand(productCreateDTO.getProductBrand());
         productFromProductCreateDTO.setPrice(productCreateDTO.getProductPrice());
+        productFromProductCreateDTO.setProductQuantity(productCreateDTO.getProductQuantity());
 
         return productFromProductCreateDTO;
 
@@ -63,15 +64,16 @@ public class ProductServiceImpl implements ProductService {
         return productOptional.orElseThrow(() -> new org.springframework.data.rest.webmvc.ResourceNotFoundException());
 
     }
-        @Override
-        public Map<String, Boolean> deleteProductById (Long productId){
 
-            Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException());
-            productRepository.deleteById(productId);
+    @Override
+    public Map<String, Boolean> deleteProductById(Long productId) {
 
-            Map<String, Boolean> response = new HashMap<>();
-            response.put("Deleted", Boolean.TRUE);
-            return response;
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException());
+        productRepository.deleteById(productId);
 
-        }
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("Deleted", Boolean.TRUE);
+        return response;
+
     }
+}

@@ -1,15 +1,5 @@
 package elif.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.stereotype.Service;
-
 import elif.dto.OrderCreateDTO;
 import elif.dto.OrderResponseDTO;
 import elif.dto.ProductResponseDTO;
@@ -19,6 +9,11 @@ import elif.repository.OrderRepository;
 import elif.service.OrderService;
 import elif.service.ProductService;
 import elif.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
 
 @Service
 
@@ -46,23 +41,25 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    double cost = 0;
+
     public Order orderCreateDTOtoOrder(OrderCreateDTO orderCreateDTO) {
 
         Order orderFromOrderCreateDTO = new Order();
-        
+
         List<Product> productList = new ArrayList<>();
-        double cost = 0;
+
 
         orderCreateDTO.getProductList().stream().forEach(n -> {
             try {
-            	Product newItem = productService.findProductById(n);
-            	productList.add(newItem);
-            	cost += newItem.getPrice();
+                Product newItem = productService.findProductById(n);
+                productList.add(newItem);
+                cost += (orderCreateDTO.getProductQuantity())*(newItem.getPrice());
             } catch (elif.exception.ResourceNotFoundException e) {
                 e.printStackTrace();
             }
         });
-        
+
         orderFromOrderCreateDTO.setProductList(productList);
         orderFromOrderCreateDTO.setCost(String.valueOf(cost));
         orderFromOrderCreateDTO.setUser(userService.findUserByEmailAdresss(orderCreateDTO.getEmail()));
@@ -76,17 +73,17 @@ public class OrderServiceImpl implements OrderService {
         OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
         orderResponseDTO.setOrderCost(order.getCost());
         orderResponseDTO.setEmail(order.getUser().getEmailAddress());
-        
+
         List<ProductResponseDTO> productResponseList = new ArrayList<>();
 
         order.getProductList().stream().forEach(n -> {
             try {
-            	productResponseList.add(productService.productResponseDTOFromProduct(productService.findProductById(n.getProductId())));
+                productResponseList.add(productService.productResponseDTOFromProduct(productService.findProductById(n.getProductId())));
             } catch (elif.exception.ResourceNotFoundException e) {
                 e.printStackTrace();
             }
         });
-        
+
         orderResponseDTO.setProductCreateDTOList(productResponseList);
 
         return orderResponseDTO;

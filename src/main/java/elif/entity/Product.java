@@ -30,6 +30,9 @@ public class Product {
     @Column(name = "product_update_date")
     private Date updateProductDate;
 
+    @Column(name = "product_quantity")
+    private int productQuantity;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "productList")
     private List<Order> orderList;
@@ -45,13 +48,14 @@ public class Product {
     public Product() {
     }
 
-    public Product(String productName, String brand, Double price, Date createProductDate, Date updateProductDate) {
-
+    public Product(String productName, String brand, Double price, Date createProductDate, Date updateProductDate, int productQuantity, List<Order> orderList) {
         this.productName = productName;
         this.brand = brand;
         this.price = price;
         this.createProductDate = createProductDate;
         this.updateProductDate = updateProductDate;
+        this.productQuantity = productQuantity;
+        this.orderList = orderList;
     }
 
     public Long getProductId() {
@@ -100,5 +104,13 @@ public class Product {
 
     public void setUpdateProductDate(Date updateProductDate) {
         this.updateProductDate = updateProductDate;
+    }
+
+    public int getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
     }
 }

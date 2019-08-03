@@ -6,6 +6,7 @@ public class ProductCreateDTO {
     private String productName;
     private String productBrand;
     private Double productPrice;
+    private int productQuantity;
 
 
     public String getProductName() {
@@ -38,5 +39,13 @@ public class ProductCreateDTO {
 
     public void setProductId(Long productId) {
         this.productId = productId;
+    }
+
+    public int getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
     }
 }
