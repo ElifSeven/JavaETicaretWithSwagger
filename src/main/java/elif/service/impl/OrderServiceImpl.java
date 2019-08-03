@@ -45,16 +45,18 @@ public class OrderServiceImpl implements OrderService {
 
     public Order orderCreateDTOtoOrder(OrderCreateDTO orderCreateDTO) {
 
+        cost = 0;
+
         Order orderFromOrderCreateDTO = new Order();
 
         List<Product> productList = new ArrayList<>();
 
 
-        orderCreateDTO.getProductList().stream().forEach(n -> {
+        orderCreateDTO.getProductWithQuantityList().entrySet().forEach(n -> {
             try {
-                Product newItem = productService.findProductById(n);
-                productList.add(newItem);
-                cost += (orderCreateDTO.getProductQuantity())*(newItem.getPrice());
+                Product productItem = productService.findProductById(n.getKey());
+                productList.add(productItem);
+                cost += (n.getValue()) * (productItem.getPrice());
             } catch (elif.exception.ResourceNotFoundException e) {
                 e.printStackTrace();
             }
@@ -78,7 +80,10 @@ public class OrderServiceImpl implements OrderService {
 
         order.getProductList().stream().forEach(n -> {
             try {
-                productResponseList.add(productService.productResponseDTOFromProduct(productService.findProductById(n.getProductId())));
+                ProductResponseDTO productResponseDTO = productService.productResponseDTOFromProduct(productService.findProductById(n.getProductId()));
+                productResponseDTO.setProductQuantity(n.getProductQuantity());
+                productResponseList.add(productResponseDTO);
+
             } catch (elif.exception.ResourceNotFoundException e) {
                 e.printStackTrace();
             }
