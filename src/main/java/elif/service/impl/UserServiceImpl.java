@@ -1,5 +1,7 @@
 package elif.service.impl;
 
+import elif.dto.UserCreateDTO;
+import elif.dto.UserResponseDTO;
 import elif.entity.User;
 import elif.repository.UserRepository;
 import elif.service.UserService;
@@ -20,20 +22,50 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUser() {
+
         return userRepository.findAll();
     }
 
     @Override
-    public User addUser(User user) {
-        return userRepository.save(user);
+    public UserResponseDTO addUser(UserCreateDTO userCreateDTO) {
+
+        User user = userCreateDTOtoUser(userCreateDTO);
+        user = userRepository.save(user);
+        return userResponseDTOFromUser(user);
     }
+
+
+    public User userCreateDTOtoUser(UserCreateDTO userCreateDTO) {
+
+        User userFromUserCreateDTO = new User();
+        userFromUserCreateDTO.setEmailAddress(userCreateDTO.getEmail());
+        userFromUserCreateDTO.setPassword(userCreateDTO.getPassword());
+
+        return userFromUserCreateDTO;
+
+    }
+
+    public UserResponseDTO userResponseDTOFromUser(User user) {
+
+        UserResponseDTO userResponseDTO = new UserResponseDTO();
+        userResponseDTO.setEmail(user.getEmailAddress());
+
+        return userResponseDTO;
+
+    }
+
 
     @Override
     public User findUserById(Long userId) {
         Optional<User> userOptional = userRepository.findById(userId);
         return userOptional.orElseThrow(() -> new org.springframework.data.rest.webmvc.ResourceNotFoundException("User not found for this id: " + userId));
 
-
+    }
+    
+    @Override
+    public User findUserByEmailAdresss(String emailAdress)
+    {
+    	return userRepository.findUserByEmailAddress(emailAdress);
     }
 
     @Override

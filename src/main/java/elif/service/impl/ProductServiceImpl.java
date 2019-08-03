@@ -25,7 +25,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = productCreateDTOtoProduct(productCreateDTO);
         product = productRepository.save(product);
-        return productResponseDTOFomProduct(product);
+        return productResponseDTOFromProduct(product);
 
     }
 
@@ -35,12 +35,13 @@ public class ProductServiceImpl implements ProductService {
         productFromProductCreateDTO.setProductName(productCreateDTO.getProductName());
         productFromProductCreateDTO.setBrand(productCreateDTO.getProductBrand());
         productFromProductCreateDTO.setPrice(productCreateDTO.getProductPrice());
+        productFromProductCreateDTO.setProductQuantity(productCreateDTO.getProductQuantity());
 
         return productFromProductCreateDTO;
 
     }
-        //save islemi icin
-    public ProductResponseDTO productResponseDTOFomProduct(Product product) {
+
+    public ProductResponseDTO productResponseDTOFromProduct(Product product) {
 
         ProductResponseDTO productResponseDTO = new ProductResponseDTO();
 

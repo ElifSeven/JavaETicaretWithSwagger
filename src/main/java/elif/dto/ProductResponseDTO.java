@@ -2,7 +2,6 @@ package elif.dto;
 
 public class ProductResponseDTO {
 
-
     private String productName;
     private String productBrand;
     private Double productPrice;

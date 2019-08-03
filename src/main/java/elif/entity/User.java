@@ -1,5 +1,7 @@
 package elif.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +26,7 @@ public class User {
     @Column(name = "user_create_date")
     private Date userCreateDate;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Order> orderList;
 
