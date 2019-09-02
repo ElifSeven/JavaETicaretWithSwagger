@@ -76,6 +76,7 @@ public class OrderServiceImpl implements OrderService {
         orderResponseDTO.setOrderCost(order.getCost());
         orderResponseDTO.setEmail(order.getUser().getEmailAddress());
 
+
         List<ProductResponseDTO> productResponseList = new ArrayList<>();
 
         order.getProductList().stream().forEach(n -> {

@@ -44,6 +44,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponseDTO productResponseDTOFromProduct(Product product) {
 
         ProductResponseDTO productResponseDTO = new ProductResponseDTO();
+        ProductCreateDTO productCreateDTO = new ProductCreateDTO();
 
         productResponseDTO.setProductName(product.getProductName());
         productResponseDTO.setProductBrand(product.getBrand());
