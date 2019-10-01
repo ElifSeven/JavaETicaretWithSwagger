@@ -1,7 +1,9 @@
 package elif.service.impl;
 
+import elif.dto.OrderProductQuantityResponseDTO;
 import elif.dto.ProductCreateDTO;
 import elif.dto.ProductResponseDTO;
+import elif.entity.OrderProductQuantity;
 import elif.entity.Product;
 import elif.repository.ProductRepository;
 import elif.service.ProductService;
@@ -51,6 +53,17 @@ public class ProductServiceImpl implements ProductService {
         productResponseDTO.setProductPrice(product.getPrice());
 
         return productResponseDTO;
+    }
+
+    @Override
+    public OrderProductQuantityResponseDTO orderProductQuantityResponseDTOFromOrderProductQuantity(OrderProductQuantity orderProductQuantity) {
+
+        Product product = findProductById(orderProductQuantity.getProductId().getProductId());
+
+        OrderProductQuantityResponseDTO orderProductQuantityResponseDTO = new OrderProductQuantityResponseDTO();
+        orderProductQuantityResponseDTO.setProductName(product.getProductName());
+        orderProductQuantityResponseDTO.setProductOrderQuantity(orderProductQuantity.getProductQuantity());
+        return orderProductQuantityResponseDTO;
     }
 
     @Override

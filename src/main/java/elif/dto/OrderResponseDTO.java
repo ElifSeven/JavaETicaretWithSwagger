@@ -4,17 +4,16 @@ import java.util.List;
 
 public class OrderResponseDTO {
 
-    private List<ProductResponseDTO> productResponseDTOList;
+    private List<OrderProductQuantityResponseDTO> orderProductQuantityResponseDTOList;
     private String orderCost;
     private String email;
 
-
-    public List<ProductResponseDTO> getProductCreateDTOList() {
-        return productResponseDTOList;
+    public List<OrderProductQuantityResponseDTO> getOrderProductQuantityResponseDTOList() {
+        return orderProductQuantityResponseDTOList;
     }
 
-    public void setProductCreateDTOList(List<ProductResponseDTO> productCreateDTOList) {
-        this.productResponseDTOList = productCreateDTOList;
+    public void setOrderProductQuantityResponseDTOList(List<OrderProductQuantityResponseDTO> orderProductQuantityResponseDTOList) {
+        this.orderProductQuantityResponseDTOList = orderProductQuantityResponseDTOList;
     }
 
     public String getOrderCost() {

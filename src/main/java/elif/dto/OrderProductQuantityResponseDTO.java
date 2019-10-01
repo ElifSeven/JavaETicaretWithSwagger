@@ -1,6 +1,6 @@
 package elif.dto;
 
-public class OrderProductResponseDTO {
+public class OrderProductQuantityResponseDTO {
 
     private String productName;
     private int productOrderQuantity;

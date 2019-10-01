@@ -1,7 +1,8 @@
 package elif.service.impl;
 
 import elif.dto.OrderCreateDTO;
-import elif.dto.OrderProductResponseDTO;
+import elif.dto.OrderProductQuantityResponseDTO;
+import elif.dto.OrderQueryDTO;
 import elif.dto.OrderResponseDTO;
 import elif.entity.Order;
 import elif.entity.OrderProductQuantity;
@@ -15,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 
@@ -38,13 +42,23 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponseDTO addOrder(OrderCreateDTO orderCreateDTO) {
 
-        OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
-
         Order order = orderCreateDTOtoOrder(orderCreateDTO);
         order = orderRepository.save(order);
 
         return orderResponseDTOFromOrder(order);
 
+    }
+
+    @Override
+    public List<OrderResponseDTO> findOrdersByQueryDTO(OrderQueryDTO orderQueryDTO) {
+        return null;
+    }
+
+    @Override
+    public OrderResponseDTO findOrderById(Long orderId) {
+
+        Order order = orderRepository.findById(orderId).get();
+        return orderResponseDTOFromOrder(order);
     }
 
     double cost = 0;
@@ -59,8 +73,11 @@ public class OrderServiceImpl implements OrderService {
 
         orderFromOrderCreateDTO = orderRepository.save(orderFromOrderCreateDTO);
 
-
-        Order finalOrderFromOrderCreateDTO = orderFromOrderCreateDTO;///hataya bak!
+        /**
+         * HATAYA BAK!  & İSİMLENDİRME DUZELT!
+         * **/
+        Order finalOrderFromOrderCreateDTO = orderFromOrderCreateDTO;
+        List<OrderProductQuantity> orderProductQuantityList = new ArrayList<>();
         orderCreateDTO.getProductWithQuantityList().entrySet().forEach(n -> {
             try {
                 OrderProductQuantity orderProductQuantity = new OrderProductQuantity();
@@ -69,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
                 orderProductQuantity.setProductId(productItem);
                 orderProductQuantity.setProductQuantity(n.getValue());
                 cost += (n.getValue()) * (productItem.getPrice());
-                orderProductQuantityRepository.save(orderProductQuantity);
+                orderProductQuantityList.add(orderProductQuantityRepository.save(orderProductQuantity));
 
             } catch (elif.exception.ResourceNotFoundException e) {
                 e.printStackTrace();
@@ -77,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
         });
 
         finalOrderFromOrderCreateDTO.setCost(String.valueOf(cost));
-
+        finalOrderFromOrderCreateDTO.setOrderProductQuantityList(orderProductQuantityList);
         return orderRepository.save(finalOrderFromOrderCreateDTO);
     }
 
@@ -88,37 +105,20 @@ public class OrderServiceImpl implements OrderService {
         orderResponseDTO.setOrderCost(order.getCost());
         orderResponseDTO.setEmail(order.getUser().getEmailAddress());
 
-
-        List<OrderProductResponseDTO> orderProductResponseList = new ArrayList<>();
+        List<OrderProductQuantityResponseDTO> orderProductResponseList = new ArrayList<>();
 
         order.getOrderProductQuantityList().stream().forEach(n -> {
-            try {
 
-                OrderProductResponseDTO orderProductResponseDTO = productService.orderProductResponseDTOFromOrderProdcutQuantity(n);
-                orderProductResponseList.add(orderProductResponseDTO);
+            OrderProductQuantityResponseDTO orderProductQuantityResponseDTO = productService.orderProductQuantityResponseDTOFromOrderProductQuantity(n);
+            orderProductResponseList.add(orderProductQuantityResponseDTO);
 
-            } catch (elif.exception.ResourceNotFoundException e) {
-                e.printStackTrace();
-            }
         });
 
-        orderResponseDTO.setProductCreateDTOList(productResponseList);
+        orderResponseDTO.setOrderProductQuantityResponseDTOList(orderProductResponseList);
 
         return orderResponseDTO;
     }
 
-
-    @Override
-    public List<Order> getAllOrder(Order order) {
-        return orderRepository.findAll();
-    }
-
-    @Override
-    public Order findOrderById(Long orderId) {
-
-        Optional<Order> orderOptional = orderRepository.findById(orderId);
-        return orderOptional.orElseThrow(() -> new ResourceNotFoundException());
-    }
 
     @Override
     public Map<String, Boolean> deleteOrderById(Long orderId) {

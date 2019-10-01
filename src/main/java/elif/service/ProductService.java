@@ -1,6 +1,6 @@
 package elif.service;
 
-import elif.dto.OrderProductResponseDTO;
+import elif.dto.OrderProductQuantityResponseDTO;
 import elif.dto.ProductCreateDTO;
 import elif.dto.ProductResponseDTO;
 import elif.entity.OrderProductQuantity;
@@ -22,7 +22,7 @@ public interface ProductService {
     
     ProductResponseDTO productResponseDTOFromProduct(Product product);
 
-    OrderProductResponseDTO orderProductResponseDTOFromOrderProdcutQuantity(OrderProductQuantity orderProductQuantity);
+    OrderProductQuantityResponseDTO orderProductQuantityResponseDTOFromOrderProductQuantity(OrderProductQuantity orderProductQuantity);
 
 
 
