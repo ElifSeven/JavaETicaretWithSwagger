@@ -1,8 +1,7 @@
 package elif.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,29 +32,19 @@ public class Product {
     @Column(name = "product_quantity")
     private int productQuantity;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "productList")
-    private List<Order> orderList;
+    @OneToMany(mappedBy = "orderId")
+    private List<OrderProductQuantity> orderList = new ArrayList<OrderProductQuantity>();
 
-    public List<Order> getOrderList() {
+
+    public List<OrderProductQuantity> getOrderList() {
         return orderList;
     }
 
-    public void setOrderList(List<Order> orderList) {
+    public void setOrderList(List<OrderProductQuantity> orderList) {
         this.orderList = orderList;
     }
 
     public Product() {
-    }
-
-    public Product(String productName, String brand, Double price, Date createProductDate, Date updateProductDate, int productQuantity, List<Order> orderList) {
-        this.productName = productName;
-        this.brand = brand;
-        this.price = price;
-        this.createProductDate = createProductDate;
-        this.updateProductDate = updateProductDate;
-        this.productQuantity = productQuantity;
-        this.orderList = orderList;
     }
 
     public Long getProductId() {

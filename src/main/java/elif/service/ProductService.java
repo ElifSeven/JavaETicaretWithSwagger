@@ -1,7 +1,9 @@
 package elif.service;
 
+import elif.dto.OrderProductQuantityResponseDTO;
 import elif.dto.ProductCreateDTO;
 import elif.dto.ProductResponseDTO;
+import elif.entity.OrderProductQuantity;
 import elif.entity.Product;
 import elif.exception.ResourceNotFoundException;
 
@@ -19,6 +21,6 @@ public interface ProductService {
     Map<String, Boolean> deleteProductById(Long productId);
     
     ProductResponseDTO productResponseDTOFromProduct(Product product);
-
+    OrderProductQuantityResponseDTO orderProductQuantityResponseDTOFromOrderProductQuantity(OrderProductQuantity orderProductQuantity);
 
 }

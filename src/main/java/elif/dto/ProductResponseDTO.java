@@ -5,6 +5,7 @@ public class ProductResponseDTO {
     private String productName;
     private String productBrand;
     private Double productPrice;
+    private int productQuantity;
 
 
     public String getProductName() {
@@ -31,5 +32,11 @@ public class ProductResponseDTO {
         this.productPrice = productPrice;
     }
 
+    public int getProductQuantity() {
+        return productQuantity;
+    }
 
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+    }
 }

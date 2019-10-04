@@ -1,34 +1,26 @@
 package elif.dto;
 
-import java.util.List;
+import java.util.HashMap;
 
 public class OrderCreateDTO {
 
     private String email;
-    private List<Long> productList;
-    private int productQuantity;
+    private HashMap<Long, Integer> productWithQuantityList;
 
     public String getEmail() {
         return email;
-    }
-
-    public List<Long> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(List<Long> productList) {
-        this.productList = productList;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public int getProductQuantity() {
-        return productQuantity;
+    public HashMap<Long, Integer> getProductWithQuantityList() {
+        return productWithQuantityList;
     }
 
-    public void setProductQuantity(int productQuantity) {
-        this.productQuantity = productQuantity;
+    public void setProductWithQuantityList(HashMap<Long, Integer> productWithQuantityList) {
+        this.productWithQuantityList = productWithQuantityList;
+
     }
 }

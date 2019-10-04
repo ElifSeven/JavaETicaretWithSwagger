@@ -1,10 +1,14 @@
 package elif.service.impl;
 
 import elif.dto.OrderCreateDTO;
+import elif.dto.OrderProductQuantityResponseDTO;
+import elif.dto.OrderQueryDTO;
 import elif.dto.OrderResponseDTO;
-import elif.dto.ProductResponseDTO;
 import elif.entity.Order;
+import elif.entity.OrderProductQuantity;
 import elif.entity.Product;
+import elif.repository.OrderProductQuantityRepository;
+
 import elif.repository.OrderRepository;
 import elif.service.OrderService;
 import elif.service.ProductService;
@@ -13,7 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 
@@ -22,17 +29,19 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+
     @Autowired
     private UserService userService;
 
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private OrderProductQuantityRepository orderProductQuantityRepository;
+
 
     @Override
     public OrderResponseDTO addOrder(OrderCreateDTO orderCreateDTO) {
-
-        OrderResponseDTO orderResponseDTO = new OrderResponseDTO();
 
         Order order = orderCreateDTOtoOrder(orderCreateDTO);
         order = orderRepository.save(order);
@@ -41,30 +50,50 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    @Override
+    public List<OrderResponseDTO> findOrdersByQueryDTO(OrderQueryDTO orderQueryDTO) {
+        return null;
+    }
+
+    @Override
+    public OrderResponseDTO findOrderById(Long orderId) {
+
+        Order order = orderRepository.findById(orderId).get();
+        return orderResponseDTOFromOrder(order);
+    }
+
     double cost = 0;
 
     public Order orderCreateDTOtoOrder(OrderCreateDTO orderCreateDTO) {
 
+        cost = 0;
+
         Order orderFromOrderCreateDTO = new Order();
 
-        List<Product> productList = new ArrayList<>();
+        orderFromOrderCreateDTO.setUser(userService.findUserByEmailAdresss(orderCreateDTO.getEmail()));
 
+        orderFromOrderCreateDTO = orderRepository.save(orderFromOrderCreateDTO);
 
-        orderCreateDTO.getProductList().stream().forEach(n -> {
+        Order finalOrderFromOrderCreateDTO = orderFromOrderCreateDTO;
+        List<OrderProductQuantity> orderProductQuantityList = new ArrayList<>();
+        orderCreateDTO.getProductWithQuantityList().entrySet().forEach(n -> {
             try {
-                Product newItem = productService.findProductById(n);
-                productList.add(newItem);
-                cost += (orderCreateDTO.getProductQuantity())*(newItem.getPrice());
+                OrderProductQuantity orderProductQuantity = new OrderProductQuantity();
+                orderProductQuantity.setOrderId(finalOrderFromOrderCreateDTO);
+                Product productItem = productService.findProductById(n.getKey());
+                orderProductQuantity.setProductId(productItem);
+                orderProductQuantity.setProductQuantity(n.getValue());
+                cost += (n.getValue()) * (productItem.getPrice());
+                orderProductQuantityList.add(orderProductQuantityRepository.save(orderProductQuantity));
+
             } catch (elif.exception.ResourceNotFoundException e) {
                 e.printStackTrace();
             }
         });
 
-        orderFromOrderCreateDTO.setProductList(productList);
-        orderFromOrderCreateDTO.setCost(String.valueOf(cost));
-        orderFromOrderCreateDTO.setUser(userService.findUserByEmailAdresss(orderCreateDTO.getEmail()));
-
-        return orderFromOrderCreateDTO;
+        finalOrderFromOrderCreateDTO.setCost(String.valueOf(cost));
+        finalOrderFromOrderCreateDTO.setOrderProductQuantityList(orderProductQuantityList);
+        return orderRepository.save(finalOrderFromOrderCreateDTO);
     }
 
 
@@ -74,32 +103,18 @@ public class OrderServiceImpl implements OrderService {
         orderResponseDTO.setOrderCost(order.getCost());
         orderResponseDTO.setEmail(order.getUser().getEmailAddress());
 
-        List<ProductResponseDTO> productResponseList = new ArrayList<>();
+        List<OrderProductQuantityResponseDTO> orderProductResponseList = new ArrayList<>();
 
-        order.getProductList().stream().forEach(n -> {
-            try {
-                productResponseList.add(productService.productResponseDTOFromProduct(productService.findProductById(n.getProductId())));
-            } catch (elif.exception.ResourceNotFoundException e) {
-                e.printStackTrace();
-            }
+        order.getOrderProductQuantityList().stream().forEach(n -> {
+
+            OrderProductQuantityResponseDTO orderProductQuantityResponseDTO = productService.orderProductQuantityResponseDTOFromOrderProductQuantity(n);
+            orderProductResponseList.add(orderProductQuantityResponseDTO);
+
         });
 
-        orderResponseDTO.setProductCreateDTOList(productResponseList);
+        orderResponseDTO.setOrderProductQuantityResponseDTOList(orderProductResponseList);
 
         return orderResponseDTO;
-    }
-
-
-    @Override
-    public List<Order> getAllOrder(Order order) {
-        return orderRepository.findAll();
-    }
-
-    @Override
-    public Order findOrderById(Long orderId) {
-
-        Optional<Order> orderOptional = orderRepository.findById(orderId);
-        return orderOptional.orElseThrow(() -> new ResourceNotFoundException());
     }
 
     @Override

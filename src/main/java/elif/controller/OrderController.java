@@ -2,8 +2,8 @@ package elif.controller;
 
 
 import elif.dto.OrderCreateDTO;
+import elif.dto.OrderQueryDTO;
 import elif.dto.OrderResponseDTO;
-import elif.entity.Order;
 import elif.repository.OrderRepository;
 import elif.service.OrderService;
 import io.swagger.annotations.ApiOperation;
@@ -34,14 +34,14 @@ public class OrderController {
 
     @ApiOperation(value = "View all order")
     @GetMapping("/view")
-    public List<Order> getAllOrder(Order order) {
+    public List<OrderResponseDTO> getAllOrder(OrderQueryDTO orderQueryDTO) {
 
-        return orderService.getAllOrder(order);
+        return orderService.findOrdersByQueryDTO(orderQueryDTO);
     }
 
     @ApiOperation(value = "View order by id")
     @GetMapping(name = "/view/{orderId}")
-    public Order findOrderById(Long orderId) throws ResourceNotFoundException {
+    public OrderResponseDTO findOrderById(Long orderId) throws ResourceNotFoundException {
 
         return orderService.findOrderById(orderId);
     }

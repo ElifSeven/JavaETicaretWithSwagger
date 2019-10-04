@@ -2,6 +2,7 @@ package elif.entity;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,22 +31,17 @@ public class Order {
     @JoinColumn(name = "user_fk", foreignKey = @ForeignKey(name = "fk_order_user_id"))
     private User user;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(
-            name = "orders_product",
-            joinColumns = {
 
-                    @JoinColumn(name = "order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "product_id")}
-    )
-    private List<Product> productList;
+    @OneToMany(mappedBy = "orderId")
+    private List<OrderProductQuantity> orderProductQuantityList = new ArrayList<OrderProductQuantity>();
 
-    public List<Product> getProductList() {
-        return productList;
+
+    public List<OrderProductQuantity> getOrderProductQuantityList() {
+        return orderProductQuantityList;
     }
 
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
+    public void setOrderProductQuantityList(List<OrderProductQuantity> orderProductQuantityList) {
+        this.orderProductQuantityList = orderProductQuantityList;
     }
 
     public User getUser() {
