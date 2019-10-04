@@ -21,5 +21,6 @@ public class OrderCreateDTO {
 
     public void setProductWithQuantityList(HashMap<Long, Integer> productWithQuantityList) {
         this.productWithQuantityList = productWithQuantityList;
+
     }
 }

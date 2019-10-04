@@ -21,9 +21,6 @@ public interface ProductService {
     Map<String, Boolean> deleteProductById(Long productId);
     
     ProductResponseDTO productResponseDTOFromProduct(Product product);
-
     OrderProductQuantityResponseDTO orderProductQuantityResponseDTOFromOrderProductQuantity(OrderProductQuantity orderProductQuantity);
-
-
 
 }

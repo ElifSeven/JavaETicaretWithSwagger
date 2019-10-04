@@ -35,6 +35,7 @@ public class Product {
     @OneToMany(mappedBy = "orderId")
     private List<OrderProductQuantity> orderList = new ArrayList<OrderProductQuantity>();
 
+
     public List<OrderProductQuantity> getOrderList() {
         return orderList;
     }
@@ -45,7 +46,6 @@ public class Product {
 
     public Product() {
     }
-
 
     public Long getProductId() {
         return productId;

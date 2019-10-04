@@ -16,9 +16,10 @@ public class OrderResponseDTO {
         this.orderProductQuantityResponseDTOList = orderProductQuantityResponseDTOList;
     }
 
-    public String getOrderCost() {
-        return orderCost;
-    }
+
+	public String getEmail() {
+		return email;
+	}
 
     public void setOrderCost(String orderCost) {
         this.orderCost = orderCost;
@@ -31,4 +32,5 @@ public class OrderResponseDTO {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }
