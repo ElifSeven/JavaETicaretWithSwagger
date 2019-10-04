@@ -73,9 +73,6 @@ public class OrderServiceImpl implements OrderService {
 
         orderFromOrderCreateDTO = orderRepository.save(orderFromOrderCreateDTO);
 
-        /**
-         * HATAYA BAK!  & İSİMLENDİRME DUZELT!
-         * **/
         Order finalOrderFromOrderCreateDTO = orderFromOrderCreateDTO;
         List<OrderProductQuantity> orderProductQuantityList = new ArrayList<>();
         orderCreateDTO.getProductWithQuantityList().entrySet().forEach(n -> {
