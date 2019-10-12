@@ -4,7 +4,6 @@ import elif.dto.OrderCreateDTO;
 import elif.dto.OrderQueryDTO;
 import elif.dto.OrderResponseDTO;
 
-
 import java.util.List;
 import java.util.Map;
 
@@ -17,4 +16,8 @@ public interface OrderService {
     OrderResponseDTO findOrderById(Long orderId);
 
     Map<String, Boolean> deleteOrderById(Long orderId);
+
+    Boolean changeStatusOfOrder(Long orderId, Boolean status);
+
+    Boolean isOrderConfirmable(Long orderId);
 }

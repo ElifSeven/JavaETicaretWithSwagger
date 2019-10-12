@@ -4,11 +4,11 @@ package elif.controller;
 import elif.dto.ProductCreateDTO;
 import elif.dto.ProductResponseDTO;
 import elif.entity.Product;
-import elif.exception.ResourceNotFoundException;
 import elif.repository.ProductRepository;
 import elif.service.ProductService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

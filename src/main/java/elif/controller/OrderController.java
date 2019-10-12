@@ -1,6 +1,5 @@
 package elif.controller;
 
-
 import elif.dto.OrderCreateDTO;
 import elif.dto.OrderQueryDTO;
 import elif.dto.OrderResponseDTO;
@@ -41,16 +40,28 @@ public class OrderController {
 
     @ApiOperation(value = "View order by id")
     @GetMapping(name = "/view/{orderId}")
-    public OrderResponseDTO findOrderById(Long orderId) throws ResourceNotFoundException {
+    public OrderResponseDTO findOrderById(@PathVariable Long orderId) throws ResourceNotFoundException {
 
         return orderService.findOrderById(orderId);
     }
 
     @ApiOperation(value = "Delete order by id")
-    @DeleteMapping(name = "/delete/{orderId}")
-    public Map<String, Boolean> deleteOrderById(Long orderId) throws ResourceNotFoundException {
+    @DeleteMapping(name = "/delete/")
+    public Map<String, Boolean> deleteOrderById(@RequestParam("orderId") Long orderId) throws ResourceNotFoundException {
 
         return orderService.deleteOrderById(orderId);
+    }
+
+    @ApiOperation(value = "Cancel the order")
+    @PutMapping(path = "/cancel/{orderId}")
+    public Boolean cancelOrder(@PathVariable(value = "orderId") Long orderId) {
+        return orderService.changeStatusOfOrder(orderId, false);
+    }
+
+    @ApiOperation(value = "Confirm the order")
+    @PutMapping(path = "/confirm/{orderId}")
+    public Boolean confirmOrder(@PathVariable(value = "orderId") Long orderId) {
+        return orderService.isOrderConfirmable(orderId);
     }
 
 }

@@ -31,10 +31,19 @@ public class Order {
     @JoinColumn(name = "user_fk", foreignKey = @ForeignKey(name = "fk_order_user_id"))
     private User user;
 
-
     @OneToMany(mappedBy = "orderId")
     private List<OrderProductQuantity> orderProductQuantityList = new ArrayList<OrderProductQuantity>();
 
+    @Column(name = "status")
+    private Boolean status;
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 
     public List<OrderProductQuantity> getOrderProductQuantityList() {
         return orderProductQuantityList;

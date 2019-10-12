@@ -8,14 +8,15 @@ import elif.entity.Order;
 import elif.entity.OrderProductQuantity;
 import elif.entity.Product;
 import elif.repository.OrderProductQuantityRepository;
-
 import elif.repository.OrderRepository;
+import elif.repository.ProductRepository;
 import elif.service.OrderService;
 import elif.service.ProductService;
 import elif.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +30,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     private UserService userService;
@@ -86,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
                 cost += (n.getValue()) * (productItem.getPrice());
                 orderProductQuantityList.add(orderProductQuantityRepository.save(orderProductQuantity));
 
-            } catch (elif.exception.ResourceNotFoundException e) {
+            } catch (ResourceNotFoundException e) {
                 e.printStackTrace();
             }
         });
@@ -126,5 +129,45 @@ public class OrderServiceImpl implements OrderService {
         Map<String, Boolean> response = new HashMap<>();
         response.put("Deleted", Boolean.TRUE);
         return response;
+    }
+
+    @Override
+    public Boolean changeStatusOfOrder(Long orderId, Boolean status) {
+
+        Order orderOptional = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException());
+
+        orderOptional.setStatus(status);
+        orderRepository.save(orderOptional);
+
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public Boolean isOrderConfirmable(Long orderId) {
+
+        Order orderOpt = orderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException());
+
+        orderOpt.getOrderProductQuantityList().stream().forEach(orderProduct ->
+        {
+            Product productInStock = productService.findProductById(orderProduct.getProductId().getProductId());
+
+            if (productInStock.getProductQuantity() >= orderProduct.getProductQuantity()) {
+
+                productInStock.setProductQuantity(productInStock.getProductQuantity() - orderProduct.getProductQuantity());
+                productRepository.save(productInStock);
+
+            } else {
+                orderOpt.setStatus(false);
+                orderRepository.save(orderOpt);
+                throw new RuntimeException("ERROR!!");
+                //          throw exception(orderId);
+            }
+        });
+
+        orderOpt.setStatus(true);
+        orderRepository.save(orderOpt);
+
+        return true;
     }
 }
