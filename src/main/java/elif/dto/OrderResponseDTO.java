@@ -16,11 +16,6 @@ public class OrderResponseDTO {
         this.orderProductQuantityResponseDTOList = orderProductQuantityResponseDTOList;
     }
 
-
-	public String getEmail() {
-		return email;
-	}
-
     public void setOrderCost(String orderCost) {
         this.orderCost = orderCost;
     }
